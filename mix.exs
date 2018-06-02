@@ -22,7 +22,8 @@ defmodule ConduitAmqpExample.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:conduit, "~> 0.12.0"}
+      {:conduit, "~> 0.12.0"},
+      {:conduit_amqp, "~> 0.6 and >= 0.6.1"}
     ]
   end
 end
