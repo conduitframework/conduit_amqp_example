@@ -1,21 +1,42 @@
 # ConduitAmqpExample
 
-**TODO: Add description**
+Example App that uses [Conduit](https://github.com/conduitframework/conduit) and [ConduitAMQP](https://github.com/conduitframework/conduit_amqp).
 
-## Installation
+## Running
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `conduit_amqp_example` to your list of dependencies in `mix.exs`:
+You'll need a RabbitMQ running locally. This project expects the default RabbitMQ user `guest` with password `guest` and
+the default port `5672`. An easy way to do that is using docker, like so:
 
-```elixir
-def deps do
-  [
-    {:conduit_amqp_example, "~> 0.1.0"}
-  ]
-end
+``` bash
+docker run -it \
+  -p 5672:5672 \
+  -p 15672:15672 \
+  --name rabbitmq \
+  --rm \
+  rabbitmq:3.6.2-management
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/conduit_amqp_example](https://hexdocs.pm/conduit_amqp_example).
+You can run the project by doing:
 
+``` bash
+iex -S mix run
+```
+
+You should see logs mentioning that it has created the `message` queue at startup.
+
+```
+22:28:46.712 [info]  AMQP Adapter started!
+22:28:46.723 [info]  Declaring queue message
+```
+
+Once you have an iex prompt, you can send a message by doing:
+
+``` elixir
+import Conduit.Message
+alias Conduit.Message
+alias ConduitSqsExampleQueue.Broker
+
+message = put_body(%Message{}, %{"my" => "message"})
+
+Broker.publish(:message, message)
+```
