@@ -38,5 +38,5 @@ alias ConduitSqsExampleQueue.Broker
 
 message = put_body(%Message{}, %{"my" => "message"})
 
-Broker.publish(:message, message)
+Broker.publish(message, :message)
 ```
